@@ -5,12 +5,12 @@ import sqlite3
 import tempfile
 import time
 import zipfile
+from typing import Optional
 
 from .apkg_col import APKG_COL
 from .apkg_schema import APKG_SCHEMA
 from .deck import Deck
 
-from typing import Optional
 
 class Package:
   def __init__(self, deck_or_decks=None, media_files=None):
@@ -42,12 +42,14 @@ class Package:
     conn.commit()
     conn.close()
 
-    with zipfile.ZipFile(file, 'w') as outzip:
-      outzip.write(dbfilename, 'collection.anki2')
+    with zipfile.ZipFile(file, "w") as outzip:
+      outzip.write(dbfilename, "collection.anki2")
 
       media_file_idx_to_path = dict(enumerate(self.media_files))
-      media_json = {idx: os.path.basename(path) for idx, path in media_file_idx_to_path.items()}
-      outzip.writestr('media', json.dumps(media_json))
+      media_json = {
+        idx: os.path.basename(path) for idx, path in media_file_idx_to_path.items()
+      }
+      outzip.writestr("media", json.dumps(media_json))
 
       for idx, path in media_file_idx_to_path.items():
         outzip.write(path, str(idx))
@@ -77,8 +79,8 @@ class Package:
     Tip: if your deck has the same name and ID as an existing deck, then the notes will get placed in that deck rather
     than a new deck being created.
     """
-    from aqt import mw  # main window
     from anki.importing.apkg import AnkiPackageImporter
+    from aqt import mw  # main window
 
     tmpfilename = tempfile.NamedTemporaryFile(delete=False).name
     self.write_to_file(tmpfilename)

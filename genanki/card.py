@@ -5,7 +5,10 @@ class Card:
 
   def write_to_db(self, cursor, timestamp: float, deck_id, note_id, id_gen, due=0):
     queue = -1 if self.suspend else 0
-    cursor.execute('INSERT INTO cards VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', (
+    # fmt: off
+    cursor.execute(
+      "INSERT INTO cards VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
+      (
         next(id_gen),    # id
         note_id,         # nid
         deck_id,         # did
@@ -24,4 +27,6 @@ class Card:
         0,               # odid
         0,               # flags
         "",              # data
-    ))
+      ),
+    )
+    # fmt: on
