@@ -1,5 +1,7 @@
 import hashlib
 
+__all__ = ["guid_for"]
+
 # fmt: off
 BASE91_TABLE = [
   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
@@ -10,7 +12,7 @@ BASE91_TABLE = [
 # fmt: on
 
 
-def guid_for(*values):
+def guid_for(*values: object):
   hash_str = "__".join(str(val) for val in values)
 
   # get the first 8 bytes of the SHA256 of hash_str as an int
@@ -23,7 +25,7 @@ def guid_for(*values):
     hash_int += b
 
   # convert to the weird base91 format that Anki uses
-  rv_reversed = []
+  rv_reversed: list[str] = []
   while hash_int > 0:
     rv_reversed.append(BASE91_TABLE[hash_int % len(BASE91_TABLE)])
     hash_int //= len(BASE91_TABLE)
