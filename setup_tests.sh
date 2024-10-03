@@ -3,6 +3,8 @@
 set -e
 anki_test_revision=ed8340a4e3a2006d6285d7adf9b136c735ba2085
 
+echo "Setting up test environment..."
+
 # Checks if the first argument is a valid executable in a POSIX-compatible way
 command_exists() {
     command -v "$1" >/dev/null
@@ -49,3 +51,7 @@ git clone https://github.com/ankitects/anki.git anki_upstream
   # patch in commit d261d1e
   rg --replace 'from shutil import which as find_executable' --passthru --no-line-number --multiline 'from distutils\.spawn import[^)]*\)' anki/mpv.py | sponge anki/mpv.py
 )
+
+# Add a marker file to virtualenv
+printf "" > "$VIRTUAL_ENV/.genanki-tests-marker"
+printf "Installed test environment to $VIRTUAL_ENV\n" 1>&2

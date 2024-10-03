@@ -18,4 +18,13 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: ./run_tests.sh
+        description: "Runs ./run_tests.sh"
+        pass_filenames: false
+        types: [python]
+        language: system
   # TODO: add pyright linter

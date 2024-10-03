@@ -1,0 +1,3 @@
+[tool.basedpyright]
+extends = "../pyproject.toml"
+extraPaths = ["../anki_upstream"]
