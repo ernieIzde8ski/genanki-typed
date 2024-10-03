@@ -115,7 +115,7 @@ class Note:
       )
     if card_ords == {}:
       card_ords = {0}
-    return [Card(ord) for ord in card_ords]
+    return [Card(ord=ord) for ord in card_ords]
 
   def _front_back_cards(self):
     """Create Front/Back cards"""
@@ -123,7 +123,7 @@ class Note:
     for card_ord, any_or_all, required_field_ords in self.model._req:
       op = {"any": any, "all": all}[any_or_all]
       if op(self.fields[ord_] for ord_ in required_field_ords):
-        rv.append(Card(card_ord))
+        rv.append(Card(ord=card_ord))
     return rv
 
   @property

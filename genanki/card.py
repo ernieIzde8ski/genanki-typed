@@ -1,9 +1,22 @@
-class Card:
-  def __init__(self, ord, suspend=False):
-    self.ord = ord
-    self.suspend = suspend
+from collections.abc import Iterator
+from sqlite3 import Cursor
 
-  def write_to_db(self, cursor, timestamp: float, deck_id, note_id, id_gen, due=0):
+from ._types import BaseModel
+
+
+class Card(BaseModel):
+  ord: int
+  suspend: bool = False
+
+  def write_to_db(
+    self,
+    cursor: Cursor,
+    timestamp: float,
+    deck_id: int,
+    note_id: int,
+    id_gen: Iterator[int | None],
+    due: int = 0,
+  ):
     queue = -1 if self.suspend else 0
     # fmt: off
     cursor.execute(

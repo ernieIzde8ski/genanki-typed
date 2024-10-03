@@ -28,6 +28,7 @@ setup(
     "cached-property>=1.5.2",
     "frozendict>=2.4.4",
     "chevron>=0.14.0",
+    "pydantic>=2.9.2",
     "pyyaml>=6.0.2",
     "typing_extensions>=4.12.2",
   ],
