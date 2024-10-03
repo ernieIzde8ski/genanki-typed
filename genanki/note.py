@@ -3,7 +3,7 @@ import warnings
 
 from cached_property import cached_property
 
-from .builtin_models import _fix_deprecated_builtin_models_and_warn
+from .builtin_models import validate_fields_for_builtin_models
 from .card import Card
 from .util import guid_for
 
@@ -165,7 +165,7 @@ class Note:
         )
 
   def write_to_db(self, cursor, timestamp: float, deck_id, id_gen):
-    self.fields = _fix_deprecated_builtin_models_and_warn(self.model, self.fields)
+    self.fields = validate_fields_for_builtin_models(self.model, self.fields)
     self._check_number_model_fields_matches_num_fields()
     self._check_invalid_html_tags_in_fields()
     # fmt: off

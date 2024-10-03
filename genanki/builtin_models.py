@@ -10,9 +10,15 @@ Note: Anki does not assign consistent IDs to its built-in models (see
     etc., which is less confusing.
 """
 
-import warnings
-
 from .model import Model
+
+__all__ = [
+  "BASIC_MODEL",
+  "BASIC_AND_REVERSED_CARD_MODEL",
+  "BASIC_OPTIONAL_REVERSED_CARD_MODEL",
+  "BASIC_TYPE_IN_THE_ANSWER_MODEL",
+  "CLOZE_MODEL",
+]
 
 BASIC_MODEL = Model(
   1559383000,
@@ -27,6 +33,9 @@ BASIC_MODEL = Model(
   ],
   css=".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n",
 )
+"""
+A basic model, replicating the Anki builtin.
+"""
 
 BASIC_AND_REVERSED_CARD_MODEL = Model(
   1485830179,
@@ -46,6 +55,13 @@ BASIC_AND_REVERSED_CARD_MODEL = Model(
   ],
   css=".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n",
 )
+"""
+A basic & reversed card model, replicating the Anki builtin.
+
+For more information on reverse cards, see:
+
+  <https://docs.ankiweb.net/templates/generation.html?highlight=basic%20reversed#reverse-cards>
+"""
 
 BASIC_OPTIONAL_REVERSED_CARD_MODEL = Model(
   1382232460,
@@ -69,6 +85,13 @@ BASIC_OPTIONAL_REVERSED_CARD_MODEL = Model(
   ],
   css=".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n",
 )
+"""
+A basic (and optional reversed) model, replicating the Anki builtin.
+
+For more information on reverse cards, see:
+
+  <https://docs.ankiweb.net/templates/generation.html?highlight=basic%20reversed#reverse-cards>
+"""
 
 BASIC_TYPE_IN_THE_ANSWER_MODEL = Model(
   1305534440,
@@ -83,6 +106,9 @@ BASIC_TYPE_IN_THE_ANSWER_MODEL = Model(
   ],
   css=".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n",
 )
+"""
+A type-in-the-answer model, replicating the Anki builtin.
+"""
 
 CLOZE_MODEL = Model(
   1550428389,
@@ -99,17 +125,22 @@ CLOZE_MODEL = Model(
   css=".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n\n"
   ".cloze {\n font-weight: bold;\n color: blue;\n}\n.nightMode .cloze {\n color: lightblue;\n}",
 )
+"""
+A Cloze model, replicating the Anki builtin.
+
+For more information on what cloze deletion is, see:
+
+  <https://docs.ankiweb.net/editing.html?highlight=cloze#cloze-deletion>
+"""
 
 
-def _fix_deprecated_builtin_models_and_warn(model, fields):
+def validate_fields_for_builtin_models(model: Model, fields: list[str]) -> list[str]:
+  """Validates fields passed to builtin models."""
   if model is CLOZE_MODEL and len(fields) == 1:
     fixed_fields = fields + [""]
-    warnings.warn(
-      "Using CLOZE_MODEL with a single field is deprecated."
-      + " Please pass two fields, e.g. {} .".format(repr(fixed_fields))
-      + " See https://github.com/kerrickstaley/genanki#cloze_model-deprecationwarning .",
-      DeprecationWarning,
+    raise TypeError(
+      "This was deprecated in genanki, and is invalid in genanki-ext."
+      f" Please pass two fields, e.g. {fixed_fields!r}."
+      " See https://github.com/kerrickstaley/genanki#cloze_model-deprecationwarning for the original deprecation notice."
     )
-    return fixed_fields
-
   return fields

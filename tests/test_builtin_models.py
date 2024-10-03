@@ -69,7 +69,7 @@ def test_cloze_with_single_field_warns():
   fnode, fpath = tempfile.mkstemp()
   os.close(fnode)
 
-  with pytest.warns(DeprecationWarning):
+  with pytest.raises(TypeError):
     my_deck.write_to_file(fpath)
 
   os.unlink(fpath)
