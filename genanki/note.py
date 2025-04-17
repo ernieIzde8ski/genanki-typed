@@ -113,7 +113,7 @@ class Note:
         for m in re.findall(r"{{c(\d+)::.+?}}", field_value, re.DOTALL)
         if int(m) > 0
       )
-    if card_ords == {}:
+    if not card_ords:
       card_ords = {0}
     return [Card(ord=ord) for ord in card_ords]
 
